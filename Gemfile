@@ -75,6 +75,10 @@ group :test do
   gem "webdrivers"
 end
 
+gem "factory_bot_rails"
+
+gem "faker"
+
 gem "devise", "~> 4.9"
 
 # gem 'ransack', '3.2'
@@ -90,3 +94,4 @@ gem "devise", "~> 4.9"
 # gem "hightop"
 
 # gem 'friendly_id'
+# gem "avo"
