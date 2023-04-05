@@ -5,4 +5,18 @@ FactoryBot.define do
     email { Faker::Internet.email }
     password { Faker::Internet.password }
   end
+
+  factory :area do
+    name { "Kauai" }
+  end
+
+  factory :property do
+    name { "Beach house" }
+    address { Faker::Address.street_address }
+  end
+
+  factory :booking do
+    visitor { "Beach house" }
+    visit_date { Time.random }
+  end
 end

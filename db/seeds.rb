@@ -3,6 +3,9 @@ require 'faker'
 User.delete_all
 
 users = []
+agents = []
+areas = []
+properties = []
 
 famous_users = [
   {
@@ -72,3 +75,23 @@ famous_users.reverse.each do |user|
   users.push(FactoryBot.create(:user, **user))
 end
 
+["ryan", "pedro", "james", "beatrice"].each do |agent_name|
+  agent = Agent.create name: agent_name
+  agent.photo.attach(io: URI.open("/Users/adrian/work/talks/dummy_apps/hawaii_files/agents/#{agent_name}.jpg"), filename: "#{agent_name}.jpg")
+  agents.push agent
+end
+
+["kauai", "oahu", "maui", "big_island"].each do |island_name|
+  area = Area.create name: island_name.humanize
+  area.photo.attach(io: URI.open("/Users/adrian/work/talks/dummy_apps/hawaii_files/islands/#{island_name}.jpg"), filename: "#{island_name}.jpg")
+  areas.push area
+end
+
+["vacay", "overlook", "hidden_gem", "family_home", "dreamy", "cottage", "churchy", "camp"].each do |property_name|
+  property = Property.create name: property_name.humanize
+  property.photo.attach(io: URI.open("/Users/adrian/work/talks/dummy_apps/hawaii_files/properties/#{property_name}.jpg"), filename: "#{property_name}.jpg")
+  5.times do |index|
+    property.photos.attach(io: URI.open("/Users/adrian/work/talks/dummy_apps/hawaii_files/property_photos/#{property_name}_#{index}.jpg"), filename: "#{property_name}_#{index}.jpg")
+  end
+  properties.push property
+end
