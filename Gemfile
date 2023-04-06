@@ -75,8 +75,6 @@ group :test do
   gem "webdrivers"
 end
 
-gem "factory_bot_rails"
-
 gem "faker"
 
 gem "devise", "~> 4.9"
