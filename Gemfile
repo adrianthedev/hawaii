@@ -94,4 +94,3 @@ gem "devise", "~> 4.9"
 # gem "hightop"
 
 # gem 'friendly_id'
-# gem "avo"

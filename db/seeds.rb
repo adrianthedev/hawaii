@@ -1,85 +1,48 @@
 require 'faker'
 
+ActiveStorage::Attachment.all.each { |attachment| attachment.purge }
+Booking.delete_all
+Property.delete_all
+Area.delete_all
 User.delete_all
 
 users = []
-agents = []
 areas = []
 properties = []
 
-famous_users = [
+[
   {
-    first_name: 'David Heinemeier',
-    last_name: 'Hansson',
-    email: 'david@hey.com'
+    first_name: 'James',
+    last_name: 'Blake',
+    email: 'james@hawaii.com',
+    roles: {owner: true, agent: true}
   },
   {
-    first_name: 'Chris',
+    first_name: 'Pedro',
     last_name: 'Oliver',
-    email: 'chris@gorails.com'
+    email: 'pedro@hawaii.com',
   },
   {
-    first_name: 'Jason',
-    last_name: 'Charnes',
-    email: 'jason@jasoncharnes.com'
+    first_name: 'Beatrice',
+    last_name: 'Campbell',
+    email: 'beatrice@hawaii.com'
   },
   {
-    first_name: 'Jason',
-    last_name: 'Swett',
-    email: 'jason@benfranklinlabs.com'
+    first_name: 'Ryan',
+    last_name: 'Clark',
+    email: 'ryan@hawaii.com'
   },
-  {
-    first_name: 'Yukihiro "Matz"',
-    last_name: 'Matsumoto',
-    email: 'matz@ruby.or.jp'
-  },
-  {
-    first_name: 'Joe',
-    last_name: 'Masilotti',
-    email: 'joe@masilotti.com'
-  },
-  {
-    first_name: 'Lucian',
-    last_name: 'Ghinda',
-    email: 'lucian@ghinda.com'
-  },
-  {
-    first_name: 'Mike',
-    last_name: 'Perham',
-    email: 'mperham@gmail.com'
-  },
-  {
-    first_name: 'Taylor',
-    last_name: 'Otwell',
-    email: 'taylor@laravel.com'
-  },
-  {
-    first_name: 'Adam',
-    last_name: 'Watham',
-    email: 'adam@adamwathan.me'
-  },
-  {
-    first_name: 'Jeffery',
-    last_name: 'Way',
-    email: 'jeffrey@laracasts.com'
-  },
-  {
-    first_name: 'Adrian',
-    last_name: 'Marin',
-    email: 'adrian@adrianthedev.com',
-    password: "secret"
-  },
-]
-
-famous_users.reverse.each do |user|
-  users.push(FactoryBot.create(:user, **user))
+].reverse.each do |user_obj|
+  user = User.create(password: "secret", roles: {owner: false, agent: true}, **user_obj)
+  filename = user_obj[:first_name].downcase
+  puts ["filename->", filename].inspect
+  user.photo.attach(io: URI.open("/Users/adrian/work/talks/dummy_apps/hawaii_files/agents/#{filename}.jpg"), filename: "#{filename}.jpg")
+  users.push user
 end
 
-["ryan", "pedro", "james", "beatrice"].each do |agent_name|
-  agent = Agent.create name: agent_name
-  agent.photo.attach(io: URI.open("/Users/adrian/work/talks/dummy_apps/hawaii_files/agents/#{agent_name}.jpg"), filename: "#{agent_name}.jpg")
-  agents.push agent
-end
+# ["ryan", "pedro", "james", "beatrice"].each do |agent_name|
+#   agent = User.create first_name: agent_name, roles: {owner: false, agent: true}
+# end
 
 ["kauai", "oahu", "maui", "big_island"].each do |island_name|
   area = Area.create name: island_name.humanize
@@ -87,11 +50,11 @@ end
   areas.push area
 end
 
-["vacay", "overlook", "hidden_gem", "family_home", "dreamy", "cottage", "churchy", "camp"].each do |property_name|
-  property = Property.create name: property_name.humanize
+["vacay", "overlook", "hidden_gem", "family_home", "dreamy", "cottage", "church", "camp"].each do |property_name|
+  property = Property.create! name: property_name.humanize, agent: users.sample, area: areas.sample, address: "#{property_name} #{["street", "beach", "cove"].sample}"
   property.photo.attach(io: URI.open("/Users/adrian/work/talks/dummy_apps/hawaii_files/properties/#{property_name}.jpg"), filename: "#{property_name}.jpg")
   5.times do |index|
-    property.photos.attach(io: URI.open("/Users/adrian/work/talks/dummy_apps/hawaii_files/property_photos/#{property_name}_#{index}.jpg"), filename: "#{property_name}_#{index}.jpg")
+    property.photos.attach(io: URI.open("/Users/adrian/work/talks/dummy_apps/hawaii_files/property_photos/#{property_name}_#{index+1}.jpg"), filename: "#{property_name}_#{index+1}.jpg")
   end
   properties.push property
 end
