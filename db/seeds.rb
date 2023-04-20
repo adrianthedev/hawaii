@@ -3,11 +3,11 @@ require "faker"
 ActiveStorage::Attachment.all.each { |attachment| attachment.purge }
 Booking.delete_all
 Property.delete_all
-Area.delete_all
+Island.delete_all
 User.delete_all
 
 users = []
-areas = []
+islands = []
 properties = []
 
 [
@@ -41,9 +41,9 @@ end
 puts ["Created users->"].inspect
 
 ["kauai", "oahu", "maui", "big_island"].each do |island_name|
-  area = Area.create name: island_name.humanize
-  area.photo.attach(io: URI.open("/Users/adrian/work/talks/dummy_apps/hawaii_files/islands/#{island_name}.jpg"), filename: "#{island_name}.jpg")
-  areas.push area
+  island = Island.create name: island_name.humanize
+  island.photo.attach(io: URI.open("/Users/adrian/work/talks/dummy_apps/hawaii_files/islands/#{island_name}.jpg"), filename: "#{island_name}.jpg")
+  islands.push island
 end
 puts ["Created islands->"].inspect
 
@@ -59,7 +59,7 @@ coordinates = [
 ]
 
 ["vacay", "overlook", "hidden_gem", "family_home", "dreamy", "cottage", "church", "camp"].each_with_index do |property_name, index|
-  property = Property.create! name: property_name.humanize, agent: users.sample, area: areas.sample, address: "#{property_name} #{["street", "beach", "cove"].sample}", coordinates: coordinates[index].join(',')
+  property = Property.create! name: property_name.humanize, user: users.sample, island: islands.sample, address: "#{property_name} #{["street", "beach", "cove"].sample}", coordinates: coordinates[index].join(',')
   property.photo.attach(io: URI.open("/Users/adrian/work/talks/dummy_apps/hawaii_files/properties/#{property_name}.jpg"), filename: "#{property_name}.jpg")
   5.times do |index|
     property.photos.attach(io: URI.open("/Users/adrian/work/talks/dummy_apps/hawaii_files/property_photos/#{property_name}_#{index+1}.jpg"), filename: "#{property_name}_#{index+1}.jpg")
