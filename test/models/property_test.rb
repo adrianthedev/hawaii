@@ -6,6 +6,7 @@
 #  address     :string
 #  coordinates :string
 #  name        :string
+#  position    :integer
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  island_id   :bigint           not null

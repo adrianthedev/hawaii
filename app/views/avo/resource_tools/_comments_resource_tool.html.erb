@@ -10,22 +10,18 @@
       <div class="flex flex-col p-4 min-h-24">
         <div class="space-y-4">
           <h3>🪧 This partial is waiting to be updated</h3>
-          <%= @resource.inspect %>
+current account: <%= Current.account %>
 
-          <br>
-          <br>
-          <%= @resource.model.inspect %>
-          <br>
-          <br>
-          <%= params.inspect %>
+          <div data-controller="visuality">
+            <input type="text"
+            data-visuality-target="input"
+            data-action="visuality#onInput"
+            >
+          </div>
 
-          <p>
-            You can edit this file here <code class='p-1 rounded bg-gray-500 text-white text-sm'>app/views/avo/resource_tools/comments_resource_tool.html.erb</code>.
-          </p>
-
-          <p>
-            The resource tool configuration file should be here <code class='p-1 rounded bg-gray-500 text-white text-sm'>app/avo/resource_tools/comments_resource_tool.rb</code>.
-          </p>
+          <%= turbo_frame_tag :something do %>
+            <%= params[:something_else] %>
+          <% end %>
 
           <%
             # In this partial you have access to the following variables:

@@ -1,5 +1,7 @@
 require "active_support/core_ext/integer/time"
 
+ENV["MAPBOX_ACCESS_TOKEN"] = "pk.eyJ1IjoiYWRyaWFudGhlZGV2IiwiYSI6ImNsZnRqbHN2NDAxazQzZnBpaWc5amVjdGkifQ.xS3RDkVMz-hyynuMnwOLUQ"
+
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 

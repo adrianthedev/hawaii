@@ -91,7 +91,8 @@ gem "chartkick"
 # gem "hightop"
 
 # gem 'friendly_id'
-# gem "mapkick-rb"
-# gem 'acts_as_list'
+gem "mapkick-rb"
+gem 'acts_as_list'
+
 
 gem "avo"

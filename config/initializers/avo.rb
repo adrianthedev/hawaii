@@ -69,20 +69,25 @@ Avo.configure do |config|
   # config.field_wrapper_layout = true
 
   ## == Branding ==
-  # config.branding = {
-  #   colors: {
-  #     background: "248 246 242",
-  #     100 => "#CEE7F8",
-  #     400 => "#399EE5",
-  #     500 => "#0886DE",
-  #     600 => "#066BB2",
-  #   },
-  #   chart_colors: ["#0B8AE2", "#34C683", "#2AB1EE", "#34C6A8"],
-  #   logo: "/avo-assets/logo.png",
-  #   logomark: "/avo-assets/logomark.png",
-  #   placeholder: "/avo-assets/placeholder.svg",
-  #   favicon: "/avo-assets/favicon.ico"
-  # }
+  config.branding = {
+    colors: {
+      background: "248 246 242",
+
+      100 => "#cdf0f3",
+      400 => "#23ae9c",
+      500 => "#199376",
+      600 => "#177d5d",
+      # 100 => "#CEE7F8",
+      # 400 => "#399EE5",
+      # 500 => "#0886DE",
+      # 600 => "#066BB2",
+    },
+    # chart_colors: ["#0B8AE2", "#34C683", "#2AB1EE", "#34C6A8"],
+    logo: "/img/logo.png",
+    logomark: "/img/logomark.png",
+    # placeholder: "/avo-assets/placeholder.svg",
+    # favicon: "/avo-assets/favicon.ico"
+  }
 
   ## == Breadcrumbs ==
   # config.display_breadcrumbs = true
@@ -91,20 +96,41 @@ Avo.configure do |config|
   # end
 
   ## == Menus ==
-  # config.main_menu = -> {
-  #   section "Dashboards", icon: "dashboards" do
-  #     all_dashboards
-  #   end
+  config.main_menu = -> {
+    if current_user.is_owner?
+    else
+      section "Public", icon: "dashboards" , collapsable: true do
+        group "People" do
+          resource :agents, authorization: -> {
 
-  #   section "Resources", icon: "resources" do
-  #     all_resources
-  #   end
+          }
+        end
+        group "Numbers" do
+          dashboard :dashy
+        end
+        end
+    end
 
-  #   section "Tools", icon: "tools" do
-  #     all_tools
-  #   end
-  # }
-  # config.profile_menu = -> {
-  #   link "Profile", path: "/avo/profile", icon: "user-circle"
-  # }
+    # section "Dashboards", icon: "dashboards" do
+    #   all_dashboards
+    # end
+
+    # section "Resources", icon: "resources" do
+    #   all_resources
+    # end
+
+    # section "Tools", icon: "tools" do
+    #   all_tools
+    # end
+  }
+  config.profile_menu = -> {
+    link "Profile", path: "/avo/profile", icon: "user-circle", data: {}, target: :_blank
+  }
+  config.profile_menu = nil
+  config.main_menu = nil
+end
+
+Rails.configuration.to_prepare do
+  Avo::ApplicationController.prepend Authentication # this will be evaluated first
+  Avo::ApplicationController.include Authentication # this will not use the set_user method
 end

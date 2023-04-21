@@ -5,6 +5,15 @@ class BookingResource < Avo::BaseResource
   #   scope.ransack(id_eq: params[:q], m: "or").result(distinct: false)
   # end
 
+  self.show_controls = -> {
+    back_button
+    delete_button
+    actions_list exclude: [MarkVisitedAction]
+    action MarkVisitedAction, style: :outline, color: :indigo
+    link_to "Turbo magic", "/avo/resources/bookings/4?something_else=visuality❤️❤️❤️", data: {turbo_frame: "something"}
+    edit_button
+  }
+
   field :id, as: :id
   # Fields generated from the model
   field :visitor, as: :text

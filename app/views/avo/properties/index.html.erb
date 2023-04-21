@@ -1,0 +1,36 @@
+<%= render Avo::TurboFrameWrapperComponent.new(params[:turbo_frame]) do %>
+  <div class="grid grid-cols-2">
+    <%
+
+    @coordinates = @resources.map do |resource|
+    property = resource.model
+      lat, long = property.coordinates.split(',')
+      {
+        latitude: lat,
+        longitude: long,
+      }
+    end
+    %>
+    <div>
+      <%= js_map @coordinates %>
+    </div>
+    <div>
+      <%= render Avo::Views::ResourceIndexComponent.new(
+          resource: @resource,
+          resources: @resources,
+          models: @models,
+          pagy: @pagy,
+          index_params: @index_params,
+          filters: @filters,
+          actions: @actions,
+          reflection: @reflection,
+          turbo_frame: params[:turbo_frame],
+          parent_model: @parent_model,
+          parent_resource: @parent_resource,
+          applied_filters: @applied_filters,
+          query: @query,
+        )
+      %>
+    </div>
+  </div>
+<% end %>

@@ -6,6 +6,7 @@
 #  address     :string
 #  coordinates :string
 #  name        :string
+#  position    :integer
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  island_id   :bigint           not null
@@ -28,4 +29,6 @@ class Property < ApplicationRecord
   has_one_attached :photo
   has_many_attached :photos
   has_many :bookings
+
+  acts_as_list
 end

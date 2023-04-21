@@ -20,6 +20,8 @@
 #  index_users_on_reset_password_token  (reset_password_token) UNIQUE
 #
 class User < ApplicationRecord
+  include Rails.application.routes.url_helpers
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -30,11 +32,21 @@ class User < ApplicationRecord
 
   has_many :properties
 
+  # default_scope -> { where role: :agent }
+
   def name
     "#{first_name} #{last_name}"
   end
 
   def is_owner?
-    role == 'owner'
+    role == "owner"
+  end
+
+  def avo_title
+    role
+  end
+
+  def avatar
+    rails_blob_path photo, only_path: true
   end
 end
