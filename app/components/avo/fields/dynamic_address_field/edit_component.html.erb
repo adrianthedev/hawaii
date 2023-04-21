@@ -1,0 +1,8 @@
+<%= field_wrapper **field_wrapper_args do %>
+
+something custom too
+  <%= @form.text_field @field.id,
+    class: classes("w-full"),
+    placeholder: @field.placeholder,
+    disabled: disabled? %>
+<% end %>

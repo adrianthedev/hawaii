@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_04_05_075005) do
+ActiveRecord::Schema[7.0].define(version: 2023_04_20_171421) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -42,6 +42,46 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_05_075005) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "bookings", force: :cascade do |t|
+    t.string "visitor"
+    t.datetime "visit_at", precision: nil
+    t.datetime "visited_at", precision: nil
+    t.bigint "user_id", null: false
+    t.bigint "property_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["property_id"], name: "index_bookings_on_property_id"
+    t.index ["user_id"], name: "index_bookings_on_user_id"
+  end
+
+  create_table "islands", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "islands_users", id: false, force: :cascade do |t|
+    t.bigint "island_id", null: false
+    t.bigint "user_id", null: false
+  end
+
+  create_table "properties", force: :cascade do |t|
+    t.string "name"
+    t.string "address"
+    t.bigint "island_id", null: false
+    t.bigint "user_id"
+    t.string "coordinates"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["island_id"], name: "index_properties_on_island_id"
+    t.index ["user_id"], name: "index_properties_on_user_id"
+  end
+
+  create_table "super_duper_trooper_users", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -52,10 +92,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_05_075005) do
     t.string "last_name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "role"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "bookings", "properties"
+  add_foreign_key "bookings", "users"
+  add_foreign_key "properties", "islands"
+  add_foreign_key "properties", "users"
 end

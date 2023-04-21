@@ -82,11 +82,11 @@ gem "devise", "~> 4.9"
 
 gem 'pundit'
 
-# gem 'ransack', '3.2'
+gem 'ransack', '3.2'
 
 # gem 'activestorage'
 
-# gem "chartkick"
+gem "chartkick"
 # gem "groupdate"
 # gem "hightop"
 
@@ -94,3 +94,4 @@ gem 'pundit'
 # gem "mapkick-rb"
 # gem 'acts_as_list'
 
+gem "avo"

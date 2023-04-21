@@ -10,6 +10,7 @@
 #  remember_created_at    :datetime
 #  reset_password_sent_at :datetime
 #  reset_password_token   :string
+#  role                   :string
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #
@@ -23,4 +24,17 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
   :recoverable, :rememberable, :validatable
+
+  has_one_attached :photo
+  has_and_belongs_to_many :islands
+
+  has_many :properties
+
+  def name
+    "#{first_name} #{last_name}"
+  end
+
+  def is_owner?
+    role == 'owner'
+  end
 end
